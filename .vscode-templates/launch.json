@@ -1,0 +1,41 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Build MobileCube Dist",
+            "type": "node",
+            "request": "launch",
+            "runtimeExecutable": "python3",
+            "args": [
+                "build.py"
+            ],
+            "cwd": "${workspaceFolder}/mobile-cube",
+            "console": "integratedTerminal",
+            "noDebug": true
+        },
+        {
+            "name": "Start Dev Server",
+            "type": "node",
+            "request": "launch",
+            "runtimeExecutable": "bash",
+            "args": [
+                "dev.sh"
+            ],
+            "cwd": "${workspaceFolder}/mobile-cube/test-story",
+            "console": "integratedTerminal",
+            "noDebug": true
+        },
+        {
+            "name": "Build Test Story",
+            "type": "node",
+            "request": "launch",
+            "runtimeExecutable": "bash",
+            "args": [
+                "build.sh"
+            ],
+            "cwd": "${workspaceFolder}/mobile-cube/test-story",
+            "console": "integratedTerminal",
+            "noDebug": true
+        }
+    ]
+}

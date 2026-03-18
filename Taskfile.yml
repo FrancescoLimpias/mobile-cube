@@ -1,0 +1,10 @@
+version: '3'
+
+tasks:
+  deploy-vscode:
+    desc: Deploy the VS Code tasks and launch configurations to the parent workspace
+    cmds:
+      - mkdir -p ../.vscode
+      - cp .vscode-templates/tasks.json ../.vscode/tasks.json
+      - cp .vscode-templates/launch.json ../.vscode/launch.json
+      - echo "VS Code configs successfully deployed to ../.vscode/"

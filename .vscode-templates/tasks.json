@@ -1,0 +1,51 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build MobileCube Dist",
+            "type": "shell",
+            "command": "python3 build.py",
+            "options": {
+                "cwd": "${workspaceFolder}/mobile-cube"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Start Dev Server",
+            "type": "shell",
+            "command": "bash dev.sh",
+            "options": {
+                "cwd": "${workspaceFolder}/mobile-cube/test-story"
+            },
+            "isBackground": true,
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Build Test Story",
+            "type": "shell",
+            "command": "bash build.sh",
+            "options": {
+                "cwd": "${workspaceFolder}/mobile-cube/test-story"
+            },
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        }
+    ]
+}
