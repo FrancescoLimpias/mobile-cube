@@ -50,6 +50,6 @@ This roadmap outlines a phased approach for gradually introducing and integratin
 ## Phase 5: Developer Tools & Ecosystem
 * **Objective**: Empower creators to build large-scale projects using modern development workflows outside of the Twine UI.
 
-- [ ] **Twee 3 Specification Compatibility**: Ensure the engine and format output are fully compatible with command-line compilers like Tweego and Extwee.
-- [ ] **MobileCube Starter Kit**: Create an official Node.js boilerplate (`create-mobilecube-app`) for organizing `.twee`, `.js`, and `.scss` files with a local live-reload dev server.
+- [x] **Twee 3 Specification Compatibility**: Ensure the engine and format output are fully compatible with command-line compilers like Tweego and Extwee.
+- [x] **MobileCube Starter Kit**: Create an official Node.js boilerplate (`create-mobilecube-app`) for organizing `.twee`, `.js`, and `.scss` files with a local live-reload dev server.
 - [ ] **VS Code Integration**: Provide standard configurations, snippets, or an extension for Visual Studio Code to auto-suggest MobileCube macros and TwineScript.

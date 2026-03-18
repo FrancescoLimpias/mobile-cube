@@ -1,0 +1,29 @@
+:: StoryTitle
+MobileCube Test Story
+
+:: StoryData
+{
+  "ifid": "A41865E5-CFEB-4D99-AABB-2A214FF06D5E",
+  "format": "MobileCube",
+  "format-version": "0.1.0",
+  "start": "Start"
+}
+
+:: Start
+<div class="test-container">
+  <h1>Welcome to MobileCube!</h1>
+  <p>This is a sample story testing the features of the MobileCube format.</p>
+  <<button "Go to Scene 1">>
+    <<goto "Scene 1">>
+  <</button>>
+</div>
+
+:: Scene 1
+<div class="test-container">
+  <h1>Scene 1</h1>
+  <p>You have navigated to the first scene successfully.</p>
+  <<button "Go Back">>
+    <<goto "Start">>
+  <</button>>
+  <p id="js-demo">JS will update this text if custom scripts are loaded correctly.</p>
+</div>

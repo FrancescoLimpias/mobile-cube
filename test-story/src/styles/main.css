@@ -1,0 +1,41 @@
+/* Custom Styles for MobileCube demo */
+.test-container {
+    padding: 20px;
+    margin: 10px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.test-container h1 {
+    color: #03a9f4;
+    margin-top: 0;
+}
+
+button {
+    background-color: #03a9f4;
+    color: #222;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s, transform 0.1s;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #29b6f6;
+    color: #000;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+#js-demo {
+    margin-top: 20px;
+    font-style: italic;
+    color: #ffd54f;
+}

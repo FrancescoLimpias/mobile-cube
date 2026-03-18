@@ -1,0 +1,8 @@
+# Ignore downloaded Tweego binaries
+bin/
+
+# Ignore compiled story output
+public/
+
+# Ignore local format symlinks
+format/
