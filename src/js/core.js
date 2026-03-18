@@ -6,7 +6,10 @@ window.MobileCube = (function() {
       // 1. Initialize Story to parse passages
       Story.init();
 
-      // 2. Update Document Title
+      // 2. Initialize UI (Sidebar, etc.)
+      UI.init();
+
+      // 3. Update Document Title
       if (Story.title) {
         document.title = Story.title;
         const titleEl = document.getElementById('story-title');

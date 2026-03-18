@@ -14,7 +14,17 @@ with open(os.path.join(src_dir, 'index.html'), 'r', encoding='utf-8') as f:
 with open(os.path.join(src_dir, 'css', 'core.css'), 'r', encoding='utf-8') as f:
     css_content = f.read()
 
-js_files = ['story.js', 'state.js', 'save.js', 'engine.js', 'core.js']
+js_files = [
+    'macro.js', 
+    'wikifier.js', 
+    'story.js', 
+    'state.js', 
+    'save.js', 
+    'engine.js', 
+    'macros/core.js', 
+    'ui.js', 
+    'core.js'
+]
 js_content = ""
 
 for js_file in js_files:

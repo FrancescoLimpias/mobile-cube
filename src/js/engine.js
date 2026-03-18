@@ -52,8 +52,7 @@ window.Engine = (function() {
     },
 
     /**
-     * Internal rendering pipeline logic.
-     * In MobileCube, this also involves parsing SugarCube links manually for MVP.
+     * Internal rendering pipeline logic using Wikifier.
      */
     renderPassage: function(passage) {
       const passagesContainer = document.getElementById('passages');
@@ -65,55 +64,14 @@ window.Engine = (function() {
       const passageEl = document.createElement('div');
       passageEl.className = 'passage';
       
-      // Basic text parser (similar to original core.js MVP)
-      let html = this.parseText(passage.text);
+      // Use Wikifier to parse the content and append the resulting DocumentFragment
+      new Wikifier(passageEl, passage.text);
       
-      passageEl.innerHTML = html;
       passagesContainer.appendChild(passageEl);
       window.scrollTo(0, 0);
 
       // Autosave after rendering a new moment
       Save.autosave.save();
-    },
-
-    /**
-     * Simple MVP text parser logic mostly for links in Twine formatting.
-     */
-    parseText: function(text) {
-      // Escape HTML
-      let parsed = text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
-
-      // Parse links: [[Link]] or [[Title|Link]] or [[Title->Link]] or [[Link<-Title]]
-      parsed = parsed.replace(/\\[\\[(.*?)\\]\\]/g, (match, inner) => {
-        let title = inner;
-        let target = inner;
-
-        if (inner.includes('|')) {
-          [title, target] = inner.split('|');
-        } else if (inner.includes('->')) {
-          [title, target] = inner.split('->');
-        } else if (inner.includes('<-')) {
-          [target, title] = inner.split('<-');
-        }
-
-        title = title.trim();
-        target = target.trim();
-
-        const exists = Story.has(target);
-        const className = exists ? 'link-internal' : 'link-broken';
-        const action = exists ? `onclick="Engine.play('${target.replace(/'/g, "\\'")}')"` : '';
-
-        return `<a href="javascript:void(0)" class="${className}" ${action}>${title}</a>`;
-      });
-
-      // Convert newlines to paragraphs
-      parsed = '<p>' + parsed.split(/\\n\\n+/).join('</p><p>') + '</p>';
-      parsed = parsed.replace(/\\n/g, '<br>');
-
-      return parsed;
     }
   };
 
