@@ -16,10 +16,10 @@ This roadmap outlines a phased approach for gradually introducing and integratin
 ## Phase 1: Foundational Engine & State Management
 * **Objective**: Establish the core runtime, memory management, and basic state tracking.
 
-- [ ] **Core Initialization**: Set up the baseline engine runtime, ensuring compatibility.
-- [ ] **State & History Tracking**: Implement the basic backward/forward navigation systems.
-- [ ] **Story Variables Framework**: Establish logic for `$variables` and `_temporaryVariables` strictly bound to the story history.
-- [ ] **Basic Save/Load Pipeline**: Introduce core save slots and autosave functionality.
+- [x] **Core Initialization**: Set up the baseline engine runtime, ensuring compatibility.
+- [x] **State & History Tracking**: Implement the basic backward/forward navigation systems.
+- [x] **Story Variables Framework**: Establish logic for `$variables` and `_temporaryVariables` strictly bound to the story history.
+- [x] **Basic Save/Load Pipeline**: Introduce core save slots and autosave functionality.
 
 ## Phase 2: Core UI & Interactive Elements
 * **Objective**: Introduce player-facing interfaces and basic interactive logic.

@@ -10,18 +10,24 @@ if (!fs.existsSync(BUILD_DIR)) {
 
 const htmlContent = fs.readFileSync(path.join(SRC_DIR, 'index.html'), 'utf8');
 const cssContent = fs.readFileSync(path.join(SRC_DIR, 'css', 'core.css'), 'utf8');
-const jsContent = fs.readFileSync(path.join(SRC_DIR, 'js', 'core.js'), 'utf8');
+
+// Concatenate JS files in the order they must be loaded
+const jsFiles = ['story.js', 'state.js', 'save.js', 'engine.js', 'core.js'];
+let jsContent = '';
+for (const file of jsFiles) {
+    jsContent += fs.readFileSync(path.join(SRC_DIR, 'js', file), 'utf8') + '\\n\\n';
+}
 
 // Inject CSS and JS into HTML
 let combinedHtml = htmlContent;
-combinedHtml = combinedHtml.replace('<!-- INJECT_CSS -->', `<style>${cssContent}</style>`);
-combinedHtml = combinedHtml.replace('<!-- INJECT_JS -->', `<script>${jsContent}</script>`);
+combinedHtml = combinedHtml.replace('<!-- INJECT_CSS -->', `<style>\\n${cssContent}\\n</style>`);
+combinedHtml = combinedHtml.replace('<!-- INJECT_JS -->', `<script>\\n${jsContent}\\n</script>`);
 
 const formatData = {
     name: "MobileCube",
     version: "0.1.0",
     author: "FrancescoLimpias",
-    description: "A mobile-first story format for Twine.",
+    description: "A mobile-first story format for Twine based on SugarCube.",
     image: "icon.svg",
     url: "https://github.com/FrancescoLimpias/mobile-cube",
     license: "BSD-2-Clause",

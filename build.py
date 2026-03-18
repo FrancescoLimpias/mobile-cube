@@ -14,12 +14,16 @@ with open(os.path.join(src_dir, 'index.html'), 'r', encoding='utf-8') as f:
 with open(os.path.join(src_dir, 'css', 'core.css'), 'r', encoding='utf-8') as f:
     css_content = f.read()
 
-with open(os.path.join(src_dir, 'js', 'core.js'), 'r', encoding='utf-8') as f:
-    js_content = f.read()
+js_files = ['story.js', 'state.js', 'save.js', 'engine.js', 'core.js']
+js_content = ""
+
+for js_file in js_files:
+    with open(os.path.join(src_dir, 'js', js_file), 'r', encoding='utf-8') as f:
+        js_content += f.read() + "\\n\\n"
 
 # Inject CSS and JS into HTML
-combined_html = html_content.replace('<!-- INJECT_CSS -->', f'<style>{css_content}</style>')
-combined_html = combined_html.replace('<!-- INJECT_JS -->', f'<script>{js_content}</script>')
+combined_html = html_content.replace('<!-- INJECT_CSS -->', f'<style>\\n{css_content}\\n</style>')
+combined_html = combined_html.replace('<!-- INJECT_JS -->', f'<script>\\n{js_content}\\n</script>')
 
 format_data = {
     "name": "MobileCube",
