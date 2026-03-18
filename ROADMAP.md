@@ -24,10 +24,10 @@ This roadmap outlines a phased approach for gradually introducing and integratin
 ## Phase 2: Core UI & Interactive Elements
 * **Objective**: Introduce player-facing interfaces and basic interactive logic.
 
-- [ ] **Built-in UI Bar**: Create the foundational navigation sidebar (restart, saves, settings stubs).
-- [ ] **Standard Interactive Macros**: Implement standard `<<link>>`, `<<button>>`, and `<<textbox>>` components.
-- [ ] **Logic & Control Flow**: Introduce standard TwineScript structural macros (`<<if>>`, `<<switch>>`, `<<set>>`).
-- [ ] **DOM Manipulation Macros**: Add `<<replace>>`, `<<append>>`, and `<<prepend>>` for dynamic inline content updates.
+- [x] **Built-in UI Bar**: Create the foundational navigation sidebar (restart, saves, settings stubs).
+- [x] **Standard Interactive Macros**: Implement standard `<<link>>`, `<<button>>`, and `<<textbox>>` components.
+- [x] **Logic & Control Flow**: Introduce standard TwineScript structural macros (`<<if>>`, `<<switch>>`, `<<set>>`).
+- [x] **DOM Manipulation Macros**: Add `<<replace>>`, `<<append>>`, and `<<prepend>>` for dynamic inline content updates.
 
 ## Phase 3: Advanced APIs & Extensibility
 * **Objective**: Provide tools for deeper customization and developer extensibility.
