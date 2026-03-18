@@ -1,0 +1,134 @@
+/* core.css - MobileCube Core Styles */
+:root {
+  --bg-color: #121212;
+  --text-color: #e0e0e0;
+  --link-color: #bb86fc;
+  --link-hover: #dfb8ff;
+  --ui-bg: #1f1f1f;
+  --ui-text: #ffffff;
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --transition-speed: 0.3s;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-family);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Typography & Links */
+a {
+  color: var(--link-color);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color var(--transition-speed) ease;
+}
+
+a:hover, a:active {
+  color: var(--link-hover);
+  text-decoration: underline;
+}
+
+/* UI Bar - Mobile First (Canvas menu) */
+#ui-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background-color: var(--ui-bg);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  z-index: 1000;
+}
+
+#ui-bar-toggle {
+  background: none;
+  border: none;
+  color: var(--ui-text);
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px;
+  margin-right: 16px;
+}
+
+#story-title {
+  color: var(--ui-text);
+  font-size: 1.2rem;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Story Area */
+#story {
+  margin-top: 60px; /* Offset for fixed UI bar */
+  padding: 24px 16px;
+  width: 100%;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  min-height: calc(100vh - 60px);
+}
+
+#passages {
+  animation: fade-in var(--transition-speed) ease-in-out;
+}
+
+.passage {
+  font-size: 1.1rem;
+  margin-bottom: 24px;
+}
+
+.passage p {
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+
+/* Animations */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Desktop Enhancements */
+@media (min-width: 768px) {
+  #ui-bar {
+    width: 250px;
+    height: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px;
+    transition: transform var(--transition-speed) ease;
+  }
+
+  #ui-bar-toggle {
+    display: none; /* Can be used to collapse sidebar later */
+  }
+
+  #story-title {
+    font-size: 1.5rem;
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  #story {
+    margin-top: 0;
+    margin-left: 250px; /* Offset for sidebar */
+    padding: 40px;
+    width: calc(100% - 250px);
+  }
+}
