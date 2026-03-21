@@ -72,6 +72,9 @@ window.Engine = (function() {
 
       // Autosave after rendering a new moment
       Save.autosave.save();
+
+      // Dispatch :passageend event for custom scripts
+      document.dispatchEvent(new CustomEvent(':passageend', { detail: { passage: passage } }));
     }
   };
 

@@ -47,6 +47,24 @@ window.Story = (function() {
       } else {
         console.warn("Story: No valid start node found.");
       }
+
+      // Load custom styles
+      const customStyle = storyData.querySelector('style[type="text/twine-css"]');
+      if (customStyle) {
+          const styleEl = document.createElement('style');
+          styleEl.textContent = customStyle.textContent;
+          document.head.appendChild(styleEl);
+      }
+
+      // Load custom scripts
+      const customScript = storyData.querySelector('script[type="text/twine-javascript"]');
+      if (customScript) {
+          try {
+              (new Function(customScript.textContent))();
+          } catch(e) {
+              console.error("Story: Error evaluating custom story JavaScript:", e);
+          }
+      }
     },
 
     /**

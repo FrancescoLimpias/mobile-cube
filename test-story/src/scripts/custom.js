@@ -1,5 +1,5 @@
 // Custom JavaScript for MobileCube demo
-$(document).on(':passageend', function(ev) {
+document.addEventListener(':passageend', function(ev) {
     var jsDemo = document.getElementById('js-demo');
     if (jsDemo) {
         jsDemo.textContent = "JavaScript execution confirmed! Enjoy building your rich MobileCube stories.";
