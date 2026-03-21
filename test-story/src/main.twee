@@ -17,7 +17,7 @@ MobileCube Test Story
   <p>Variables test: You have $apples apples.</p>
   
   <p>Inline Button Support:</p>
-  <<button "Go to Scene 1" "Scene 1">>
+  <<button "Go to Scene 1" "Scene 1">><</button>>
   
   <p>Standard Link Support:</p>
   [[Go to Scene 1 (Link)|Scene 1]]
@@ -34,6 +34,6 @@ MobileCube Test Story
     <p>Conditional test failed. Apples: $apples</p>
   <</if>>
   
-  <<button "Go Back" "Start">>
+  <<button "Go Back" "Start">><</button>>
   <p id="js-demo">JS will update this text if custom scripts are loaded correctly.</p>
 </div>

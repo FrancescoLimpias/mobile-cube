@@ -147,11 +147,23 @@ window.Wikifier = (function() {
             return `<a href="javascript:void(0)" class="${className}" ${action}>${title}</a>`;
           });
 
-          // Parse explicit buttons: <<button "Text" "Passage">>
-          parsed = parsed.replace(/<<button\s+"([^"]+)"\s+"([^"]+)">>/g, (match, title, target) => {
-             const className = 'macro-button ' + (Story.has(target) ? 'link-internal' : 'link-broken');
-             const action = `onclick="Engine.play('${target.replace(/'/g, "\\'")}')"`;
-             return `<button class="${className}" ${action}>${title}</button>`;
+          // Parse explicit buttons/links: <<button "Text" "Passage">><</button>> or <<link "Text" "Passage">><</link>>
+          parsed = parsed.replace(/<<(button|link)\s+"([^"]+)"(?:\s+"([^"]+)")?>>([\s\S]*?)<<\/\1>>/g, (match, macroName, title, target, innerContent) => {
+             const isButton = macroName === 'button';
+             const dest = target || title;
+             let className = '';
+             let action = '';
+
+             if (dest) {
+                 className = (isButton ? 'macro-button ' : '') + 'macro-' + macroName + ' ' + (Story.has(dest) ? 'link-internal' : 'link-broken');
+                 action = `onclick="Engine.play('${dest.replace(/'/g, "\\'")}')"`;
+             }
+
+             if (isButton) {
+                 return `<button class="${className}" ${action}>${title}</button>`;
+             } else {
+                 return `<a href="javascript:void(0)" class="${className}" ${action}>${title}</a>`;
+             }
           });
 
           // Text to DOM Conversion

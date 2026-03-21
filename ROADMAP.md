@@ -11,7 +11,7 @@
 
 ---
 
-This roadmap outlines a phased approach for gradually introducing and integrating standard SugarCube 2 features into the MobileCube ecosystem. This structured rollout ensures stability while systematically building out a complete, interactive storytelling engine.
+This roadmap outlines a phased approach for gradually introducing and integrating standard SugarCube 2 features into the MobileCube ecosystem. This structured rollout ensures stability while systematically building out a complete, interactive storytelling engine. A primary, overarching goal is to be **fully compatible with pre-existing SugarCube stories**, allowing authors to effortlessly port their existing games to the MobileCube format without requiring code changes.
 
 ## Phase 1: Foundational Engine & State Management
 * **Objective**: Establish the core runtime, memory management, and basic state tracking.
