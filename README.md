@@ -16,7 +16,7 @@ To start the local Hot-Reloading development server:
 2. In the `mobile-cube` directory, simply run:
 
    ```bash
-   docker compose up dev
+   task dev
    ```
 
 3. Open your browser to `http://localhost:8000/` to test and view the MobileCube format output.

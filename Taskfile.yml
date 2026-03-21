@@ -1,6 +1,21 @@
 version: '3'
 
 tasks:
+  dev:
+    desc: Start the hot-reloading development server
+    cmds:
+      - docker compose up dev
+
+  build:
+    desc: Build the MobileCube engine distribution
+    cmds:
+      - docker compose run --rm dev python3 build.py
+
+  build-test:
+    desc: Build the test story HTML using the compiled engine
+    cmds:
+      - docker compose run --rm dev bash -c "cd test-story && bash build.sh"
+
   deploy-vscode:
     desc: Deploy the VS Code tasks and launch configurations to the parent workspace
     cmds:
