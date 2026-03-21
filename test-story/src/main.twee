@@ -13,17 +13,27 @@ MobileCube Test Story
 <div class="test-container">
   <h1>Welcome to MobileCube!</h1>
   <p>This is a sample story testing the features of the MobileCube format.</p>
-  <<button "Go to Scene 1">>
-    <<goto "Scene 1">>
-  <</button>>
+  <<set $apples to 0>>
+  <p>Variables test: You have $apples apples.</p>
+  
+  <p>Inline Button Support:</p>
+  <<button "Go to Scene 1" "Scene 1">>
+  
+  <p>Standard Link Support:</p>
+  [[Go to Scene 1 (Link)|Scene 1]]
 </div>
 
 :: Scene 1
 <div class="test-container">
   <h1>Scene 1</h1>
   <p>You have navigated to the first scene successfully.</p>
-  <<button "Go Back">>
-    <<goto "Start">>
-  <</button>>
+  <<set $apples to $apples + 1>>
+  <<if $apples gt 0>>
+    <p>Conditional test passed! Apples: $apples</p>
+  <<else>>
+    <p>Conditional test failed. Apples: $apples</p>
+  <</if>>
+  
+  <<button "Go Back" "Start">>
   <p id="js-demo">JS will update this text if custom scripts are loaded correctly.</p>
 </div>

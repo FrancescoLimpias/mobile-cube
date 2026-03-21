@@ -5,8 +5,13 @@
             "name": "Build MobileCube Dist",
             "type": "node",
             "request": "launch",
-            "runtimeExecutable": "python3",
+            "runtimeExecutable": "docker",
             "args": [
+                "compose",
+                "run",
+                "--rm",
+                "dev",
+                "python3",
                 "build.py"
             ],
             "cwd": "${workspaceFolder}/mobile-cube",
@@ -17,11 +22,13 @@
             "name": "Start Dev Server",
             "type": "node",
             "request": "launch",
-            "runtimeExecutable": "bash",
+            "runtimeExecutable": "docker",
             "args": [
-                "dev.sh"
+                "compose",
+                "up",
+                "dev"
             ],
-            "cwd": "${workspaceFolder}/mobile-cube/test-story",
+            "cwd": "${workspaceFolder}/mobile-cube",
             "console": "integratedTerminal",
             "noDebug": true
         },
@@ -29,11 +36,17 @@
             "name": "Build Test Story",
             "type": "node",
             "request": "launch",
-            "runtimeExecutable": "bash",
+            "runtimeExecutable": "docker",
             "args": [
-                "build.sh"
+                "compose",
+                "run",
+                "--rm",
+                "dev",
+                "bash",
+                "-c",
+                "cd test-story && bash build.sh"
             ],
-            "cwd": "${workspaceFolder}/mobile-cube/test-story",
+            "cwd": "${workspaceFolder}/mobile-cube",
             "console": "integratedTerminal",
             "noDebug": true
         }

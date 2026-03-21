@@ -8,11 +8,24 @@ MobileCube is designed primarily for mobile devices, utilizing gestures for smoo
 
 ## Quick Start
 
-⚠️ **Placeholder:** *Instructions pending deployment documentation. See Docs Map below.*
+MobileCube uses a completely containerized development environment via Docker to ensure OS agnosticism.
+
+To start the local Hot-Reloading development server:
+
+1. Ensure Docker Desktop or Docker Engine is running on your host machine.
+2. In the `mobile-cube` directory, simply run:
+
+   ```bash
+   docker compose up dev
+   ```
+
+3. Open your browser to `http://localhost:8000/` to test and view the MobileCube format output.
 
 ## Architecture
 
-The project generates a Twine story format via a build script (`build.js` or `build.py`). It reads source files from `src/` (including HTML, CSS, and modular JS scripts like engine, state, and macros) and concatenates them into a single `format.js` payload in the `dist/` directory `[unverified if further build steps exist]`.
+The project generates a Twine story format via a containerized build script (`build.py`). It reads source files from `src/` (including HTML, CSS, and modular JS scripts like engine, state, and macros) and concatenates them into a single `format.js` payload in the `dist/` directory.
+
+The `test-story` demo handles building the actual Twine format HTML output using the compiled engine and serving it to the local browser.
 
 ## Docs Map
 

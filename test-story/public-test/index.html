@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>MobileCube Test Story</title>
+  <style>
+/* core.css - MobileCube Core Styles */
+:root {
+  --bg-color: #121212;
+  --text-color: #e0e0e0;
+  --link-color: #bb86fc;
+  --link-hover: #dfb8ff;
+  --ui-bg: #1f1f1f;
+  --ui-text: #ffffff;
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --transition-speed: 0.3s;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-family);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Typography & Links */
+a {
+  color: var(--link-color);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color var(--transition-speed) ease;
+}
+
+a:hover, a:active {
+  color: var(--link-hover);
+  text-decoration: underline;
+}
+
+/* UI Bar - Mobile First (Canvas menu) */
+#ui-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background-color: var(--ui-bg);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  z-index: 1000;
+}
+
+#ui-bar-toggle {
+  background: none;
+  border: none;
+  color: var(--ui-text);
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px;
+  margin-right: 16px;
+}
+
+#story-title {
+  color: var(--ui-text);
+  font-size: 1.2rem;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Story Area */
+#story {
+  margin-top: 60px; /* Offset for fixed UI bar */
+  padding: 24px 16px;
+  width: 100%;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  min-height: calc(100vh - 60px);
+}
+
+#passages {
+  animation: fade-in var(--transition-speed) ease-in-out;
+}
+
+.passage {
+  font-size: 1.1rem;
+  margin-bottom: 24px;
+}
+
+.passage p {
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+
+/* Animations */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Desktop Enhancements */
+@media (min-width: 768px) {
+  #ui-bar {
+    width: 250px;
+    height: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px;
+    transition: transform var(--transition-speed) ease;
+  }
+
+  #ui-bar-toggle {
+    display: none; /* Can be used to collapse sidebar later */
+  }
+
+  #story-title {
+    font-size: 1.5rem;
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  #story {
+    margin-top: 0;
+    margin-left: 250px; /* Offset for sidebar */
+    padding: 40px;
+    width: calc(100% - 250px);
+  }
+}
+
+/* Sidebar Styles dynamically added by UI module */
+.mc-sidebar-closed {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    width: 250px;
+    height: 100vh;
+    background-color: var(--ui-bg);
+    transition: left var(--transition-speed) ease;
+    z-index: 2000;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.5);
+}
+
+.mc-sidebar-open {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100vh;
+    background-color: var(--ui-bg);
+    transition: left var(--transition-speed) ease;
+    z-index: 2000;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.5);
+}
+
+.mc-sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#mc-sidebar-close {
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.mc-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: left;
+}
+
+.mc-btn:hover {
+    background-color: #444;
+}
+
+.mc-btn-danger {
+    background-color: #b00020;
+}
+
+.mc-btn-danger:hover {
+    background-color: #d32f2f;
+}
+
+.macro-button {
+    background-color: var(--link-color);
+    color: #000;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-right: 8px;
+    margin-bottom: 8px;
+}
+
+.macro-button:hover {
+    background-color: var(--link-hover);
+}
+
+</style>
+</head>
+<body>
+  <div id="ui-bar">
+    <button id="ui-bar-toggle" aria-label="Toggle UI Bar">&#9776;</button>
+    <div id="story-title">MobileCube Test Story</div>
+  </div>
+  
+  <div id="story">
+    <div id="passages"></div>
+  </div>
+
+  <div id="story-data" style="display:none;">
+    <!-- UUID://A41865E5-CFEB-4D99-AABB-2A214FF06D5E// --><tw-storydata name="MobileCube Test Story" startnode="1" creator="Tweego" creator-version="2.1.1+81d1d71" ifid="A41865E5-CFEB-4D99-AABB-2A214FF06D5E" zoom="1" format="MobileCube" format-version="0.1.0" options="" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">/* Custom Styles for MobileCube demo */
+.test-container {
+    padding: 20px;
+    margin: 10px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.test-container h1 {
+    color: #03a9f4;
+    margin-top: 0;
+}
+
+button {
+    background-color: #03a9f4;
+    color: #222;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s, transform 0.1s;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #29b6f6;
+    color: #000;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+#js-demo {
+    margin-top: 20px;
+    font-style: italic;
+    color: #ffd54f;
+}
+</style><script role="script" id="twine-user-script" type="text/twine-javascript">// Custom JavaScript for MobileCube demo
+$(document).on(':passageend', function(ev) {
+    var jsDemo = document.getElementById('js-demo');
+    if (jsDemo) {
+        jsDemo.textContent = "JavaScript execution confirmed! Enjoy building your rich MobileCube stories.";
+        jsDemo.style.color = "#4CAF50";
+        jsDemo.style.fontWeight = "bold";
+    }
+});
+</script><tw-passagedata pid="1" name="Start" tags="" position="100,100" size="100,100">&lt;div class=&quot;test-container&quot;&gt;
+  &lt;h1&gt;Welcome to MobileCube!&lt;/h1&gt;
+  &lt;p&gt;This is a sample story testing the features of the MobileCube format.&lt;/p&gt;
+  &lt;&lt;set $apples to 0&gt;&gt;
+  &lt;p&gt;Variables test: You have $apples apples.&lt;/p&gt;
+  
+  &lt;p&gt;Inline Button Support:&lt;/p&gt;
+  &lt;&lt;button &quot;Go to Scene 1&quot; &quot;Scene 1&quot;&gt;&gt;
+  
+  &lt;p&gt;Standard Link Support:&lt;/p&gt;
+  [[Go to Scene 1 (Link)|Scene 1]]
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="2" name="Scene 1" tags="" position="225,100" size="100,100">&lt;div class=&quot;test-container&quot;&gt;
+  &lt;h1&gt;Scene 1&lt;/h1&gt;
+  &lt;p&gt;You have navigated to the first scene successfully.&lt;/p&gt;
+  &lt;&lt;set $apples to $apples + 1&gt;&gt;
+  &lt;&lt;if $apples gt 0&gt;&gt;
+    &lt;p&gt;Conditional test passed! Apples: $apples&lt;/p&gt;
+  &lt;&lt;else&gt;&gt;
+    &lt;p&gt;Conditional test failed. Apples: $apples&lt;/p&gt;
+  &lt;&lt;/if&gt;&gt;
+  
+  &lt;&lt;button &quot;Go Back&quot; &quot;Start&quot;&gt;&gt;
+  &lt;p id=&quot;js-demo&quot;&gt;JS will update this text if custom scripts are loaded correctly.&lt;/p&gt;
+&lt;/div&gt;</tw-passagedata></tw-storydata>
+  </div>
+
+  <script>
+// macro.js - The Macro API for registering and executing Twine macros
+
+window.Macro = (function() {
+  const macros = {};
+
+  const api = {
+    /**
+     * Register a new macro
+     * @param {string|string[]} name 
+     * @param {object} handlerDef 
+     */
+    add: function(name, handlerDef) {
+        let names = Array.isArray(name) ? name : [name];
+        names.forEach(n => {
+            macros[n] = handlerDef;
+            macros[n].name = n;
+        });
+    },
+
+    /**
+     * Get a registered macro handler
+     */
+    get: function(name) {
+        return macros[name] || null;
+    },
+
+    /**
+     * Check if a macro is registered
+     */
+    has: function(name) {
+        return macros[name] !== undefined;
+    }
+  };
+
+  return api;
+})();
+
+
+// wikifier.js - Parses passage text, resolving Twine markup, variables, and macros
+
+window.Wikifier = (function() {
+  
+  /**
+   * Safe evaluator function to parse simple JS expressions in the context of State.variables and State.temporary.
+   * VERY basic implementation. In a full version, this would be a robust expression evaluation engine.
+   */
+  function evalTwineExpression(expr) {
+      if (!expr) return undefined;
+      
+      // Basic alias replacements for TwineScript
+      let jsExpr = expr
+        .replace(/\bto\b/g, '=')
+        .replace(/\beq\b/g, '==')
+        .replace(/\bneq\b/g, '!=')
+        .replace(/\bgt\b/g, '>')
+        .replace(/\bgte\b/g, '>=')
+        .replace(/\blt\b/g, '<')
+        .replace(/\blte\b/g, '<=')
+        .replace(/\band\b/g, '&&')
+        .replace(/\bor\b/g, '||')
+        .replace(/\bnot\b/g, '!');
+
+      // We use a small hack to replace $var with State.variables.var and _var with State.temporary.var
+      jsExpr = jsExpr.replace(/\$([a-zA-Z0-9_]+)/g, "State.variables.$1");
+      jsExpr = jsExpr.replace(/_([a-zA-Z0-9_]+)/g, "State.temporary.$1");
+
+      try {
+          return (new Function(`return (${jsExpr});`))();
+      } catch (e) {
+          console.error("Wikifier expression error: " + jsExpr, e);
+          return null;
+      }
+  }
+
+  /**
+   * Safely execute a Twine statement (like setting a variable)
+   */
+  function executeTwineStatement(stmt) {
+       // Similar to expression eval, but we don't return anything
+       let jsExpr = stmt
+        .replace(/\bto\b/g, '=')
+        .replace(/\$([a-zA-Z0-9_]+)/g, "State.variables.$1")
+        .replace(/_([a-zA-Z0-9_]+)/g, "State.temporary.$1");
+
+      try {
+          (new Function(`${jsExpr};`))();
+      } catch (e) {
+          console.error("Wikifier statement error: " + jsExpr, e);
+      }
+  }
+
+  class Wikifier {
+      constructor(target, source) {
+          this.target = target;
+          this.source = source;
+          this.output = document.createDocumentFragment();
+          this.wikify();
+          if (this.target) {
+              this.target.appendChild(this.output);
+          }
+      }
+
+      wikify() {
+          // MVP Parsing Strategy
+          // 1. Convert newlines to breaks or paragraphs (if not inside HTML tags ideally, but MVP here)
+          // 2. Parse Links [[Link]]
+          // 3. Parse Macros <<macro ...>> ... <</macro>>
+          
+          let text = this.source;
+
+          // Process Macros (Simplistic matching)
+          // Support pairing blocks and inline execution. For MVP we'll just evaluate <<set>> and conditional blocks.
+          
+          // Before anything else, parse and execute <<set>>
+          text = text.replace(/<<set\s+(.+?)>>/g, (match, expression) => {
+              executeTwineStatement(expression);
+              return ''; // Remove from output
+          });
+
+          // Hacky <<if>> processing for MVP
+          // Note: Full Twine macro parsing is deeply recursive and complex. 
+          // For a true engine, we'd tokenize. Here, we'll do simple split logic.
+          let ifBlocks = [];
+          while (text.includes('<<if ')) {
+              const startIdx = text.indexOf('<<if ');
+              const endIf = text.indexOf('<</if>>', startIdx);
+              if (endIf === -1) break;
+
+              const fullBlock = text.substring(startIdx, endIf + 7);
+              
+              // Evaluate conditions
+              const conditionMatch = fullBlock.match(/<<if\s+(.+?)>>/);
+              let renderContent = '';
+
+              if (conditionMatch) {
+                  const [ifHeader, ifExpr] = conditionMatch;
+                  
+                  // Simplistic split logic checking <<elseif>> and <<else>>
+                  let sectionsText = fullBlock.substring(ifHeader.length, fullBlock.length - 7);
+                  
+                  // This MVP only supports single if/else to keep logic sane for now.
+                  const elseSplit = sectionsText.split('<<else>>');
+                  const targetContent = evalTwineExpression(ifExpr) ? elseSplit[0] : (elseSplit[1] || '');
+                  
+                  text = text.substring(0, startIdx) + targetContent + text.substring(endIf + 7);
+              } else {
+                  // Fallback to remove broken macro
+                  text = text.substring(0, startIdx) + text.substring(endIf + 7);
+              }
+          }
+
+          // Evaluate raw variables: $var, _var
+          text = text.replace(/(^|[^\w])\$([a-zA-Z0-9_]+)/g, (match, pre, varName) => {
+              return pre + (State.variables[varName] !== undefined ? State.variables[varName] : match);
+          });
+          text = text.replace(/(^|[^\w])_([a-zA-Z0-9_]+)/g, (match, pre, varName) => {
+              return pre + (State.temporary[varName] !== undefined ? State.temporary[varName] : match);
+          });
+
+          // Escape remaining basic HTML except script tags
+          let parsed = text;
+
+           // Re-instate strong/em
+           // Too complex for RegExp without side-effects, so we'll just allow some simple ones if needed.
+
+          // Parse links: [[Link]] or [[Title|Link]]
+          parsed = parsed.replace(/\[\[(.*?)\]\]/g, (match, inner) => {
+            let title = inner;
+            let target = inner;
+
+            if (inner.includes('|')) {
+              [title, target] = inner.split('|');
+            } else if (inner.includes('->')) {
+              [title, target] = inner.split('->');
+            } else if (inner.includes('<-')) {
+              [target, title] = inner.split('<-');
+            }
+
+            title = title.trim();
+            target = target.trim();
+
+            const className = Story.has(target) ? 'link-internal' : 'link-broken';
+            const action = `onclick="Engine.play('${target.replace(/'/g, "\\'")}')"`;
+
+            return `<a href="javascript:void(0)" class="${className}" ${action}>${title}</a>`;
+          });
+
+          // Parse explicit buttons: <<button "Text" "Passage">>
+          parsed = parsed.replace(/<<button\s+"([^"]+)"\s+"([^"]+)">>/g, (match, title, target) => {
+             const className = 'macro-button ' + (Story.has(target) ? 'link-internal' : 'link-broken');
+             const action = `onclick="Engine.play('${target.replace(/'/g, "\\'")}')"`;
+             return `<button class="${className}" ${action}>${title}</button>`;
+          });
+
+          // Text to DOM Conversion
+          const container = document.createElement('div');
+          
+          // Fast line break transformation
+          parsed = '<p>' + parsed.split(/\n\n+/).join('</p><p>') + '</p>';
+          parsed = parsed.replace(/\n/g, '<br>');
+
+          container.innerHTML = parsed;
+          
+          while(container.firstChild) {
+              this.output.appendChild(container.firstChild);
+          }
+      }
+  }
+
+  return Wikifier;
+})();
+
+
+// story.js - Manages the game's story passages and metadata
+
+window.Story = (function() {
+  const story = {
+    title: "",
+    name: "", // Alias for title
+    startPassage: null,
+    passages: {}, // pid -> passage data
+    passageNames: {}, // name -> pid
+
+    /**
+     * Parse the Twine HTML structure (`tw-storydata` and `tw-passagedata`)
+     */
+    init: function() {
+      const storyData = document.querySelector('tw-storydata');
+      if (!storyData) {
+        console.error("Story: No <tw-storydata> found. This doesn't look like a Twine project.");
+        return;
+      }
+
+      this.title = storyData.getAttribute('name');
+      this.name = this.title;
+      const startNodeId = storyData.getAttribute('startnode');
+      
+      // Extract passages
+      const passageNodes = storyData.querySelectorAll('tw-passagedata');
+      passageNodes.forEach(node => {
+        const pid = node.getAttribute('pid');
+        const name = node.getAttribute('name');
+        const text = node.textContent;
+        const tagsAttribute = node.getAttribute('tags');
+        const tags = tagsAttribute ? tagsAttribute.split(' ') : [];
+        
+        const passage = { 
+            pid, 
+            name, 
+            tags,
+            text 
+        };
+        this.passages[pid] = passage;
+        this.passageNames[name] = pid;
+      });
+
+      // Resolve start node
+      if (startNodeId && this.passages[startNodeId]) {
+        this.startPassage = this.passages[startNodeId].name;
+      } else {
+        console.warn("Story: No valid start node found.");
+      }
+    },
+
+    /**
+     * Checks if a passage exists by its name.
+     */
+    has: function(title) {
+        return this.passageNames[title] !== undefined;
+    },
+
+    /**
+     * Retrieves a passage by its name.
+     */
+    get: function(title) {
+        if (!this.has(title)) {
+            return null;
+        }
+        return this.passages[this.passageNames[title]];
+    }
+  };
+
+  return story;
+})();
+
+
+// state.js - Manages the player's history and variables
+
+window.State = (function() {
+  /**
+   * Helper function to perform a deep clone of the variables object
+   * Currently uses JSON stringification for simplicity and complete isolation, 
+   * which matches SugarCube's deep object cloning for most basic data types.
+   */
+  function cloneVariables(vars) {
+    if (!vars) return {};
+    return JSON.parse(JSON.stringify(vars));
+  }
+
+  const state = {
+    variables: {}, // Equivalent to $variables
+    temporary: {}, // Equivalent to _variables
+    history: [],   // Array of state "moments"
+    index: -1,     // Current position in the history array
+
+    /**
+     * Restores state to a specific history index
+     */
+    restore: function(index) {
+        if (index < 0 || index >= this.history.length) return false;
+        
+        this.index = index;
+        const moment = this.history[index];
+        this.variables = cloneVariables(moment.variables);
+        this.temporary = {}; // Temporary variables reset on navigation
+        return true;
+    },
+
+    /**
+     * Push a new state moment to history
+     */
+    push: function(passageName) {
+        // If we are currently not at the end of the history array
+        // (meaning the user has navigated backwards), truncate the forward history
+        if (this.index < this.history.length - 1) {
+            this.history = this.history.slice(0, this.index + 1);
+        }
+
+        const newVars = cloneVariables(this.variables);
+        
+        const moment = {
+            passage: passageName,
+            variables: newVars,
+            // To mimic SugarCube, we'd also store a clone of variables here
+        };
+
+        this.history.push(moment);
+        this.index = this.history.length - 1;
+
+        // Reset temporary variables for the new passage
+        this.temporary = {};
+        
+        // Re-assign variables so any object references in macros manipulate the correct object
+        this.variables = newVars;
+    },
+
+    /**
+     * Clear all state history
+     */
+    reset: function() {
+        this.variables = {};
+        this.temporary = {};
+        this.history = [];
+        this.index = -1;
+    },
+
+    /**
+     * Retrieve the name of the current passage according to history
+     */
+    get currentPassageName() {
+        if (this.index >= 0 && this.index < this.history.length) {
+            return this.history[this.index].passage;
+        }
+        return null;
+    }
+  };
+
+  return state;
+})();
+
+
+// save.js - Manages saving and loading the game state
+
+window.Save = (function() {
+  
+  function getFullKey(key) {
+      const prefix = window.Story ? window.Story.title : "MobileCubeStore";
+      return `mobilecube_${prefix}_${key}`;
+  }
+
+  const saveAPI = {
+    /**
+     * Serialize and save current engine state to a specific slot within local storage.
+     */
+    serialize: function() {
+        return JSON.stringify({
+            history: State.history,
+            index: State.index,
+            metadata: {
+                date: new Date().toISOString(),
+                passage: State.currentPassageName
+            }
+        });
+    },
+
+    deserialize: function(saveDataStr) {
+        try {
+            const data = JSON.parse(saveDataStr);
+            if (data && data.history) {
+                State.history = data.history;
+                // Load the index, ensure it is within bounds
+                State.restore(data.index);
+                return data.metadata.passage;
+            }
+        } catch(e) {
+            console.error("Save: Failed to deserialize save data", e);
+        }
+        return null;
+    },
+
+    slots: {
+        save: function(slotId) {
+            const json = saveAPI.serialize();
+            localStorage.setItem(getFullKey('slot_' + slotId), json);
+            return true;
+        },
+        load: function(slotId) {
+            const json = localStorage.getItem(getFullKey('slot_' + slotId));
+            if (!json) return false;
+            
+            const passageName = saveAPI.deserialize(json);
+            if (passageName) {
+                Engine.play(passageName, true); // true = is loading, avoid adding to history again
+                return true;
+            }
+            return false;
+        },
+        has: function(slotId) {
+            return localStorage.getItem(getFullKey('slot_' + slotId)) !== null;
+        },
+        delete: function(slotId) {
+            localStorage.removeItem(getFullKey('slot_' + slotId));
+        }
+    },
+
+    autosave: {
+        save: function() {
+            const json = saveAPI.serialize();
+            localStorage.setItem(getFullKey('autosave'), json);
+        },
+        load: function() {
+            const json = localStorage.getItem(getFullKey('autosave'));
+            if (!json) return false;
+            
+            const passageName = saveAPI.deserialize(json);
+            if (passageName) {
+                Engine.play(passageName, true);
+                return true;
+            }
+            return false;
+        },
+        has: function() {
+            return localStorage.getItem(getFullKey('autosave')) !== null;
+        },
+        delete: function() {
+            localStorage.removeItem(getFullKey('autosave'));
+        }
+    }
+  };
+
+  return saveAPI;
+})();
+
+
+// engine.js - Runs the passage transitions and game loop
+
+window.Engine = (function() {
+  const engine = {
+    /**
+     * Play a specific passage.
+     * @param {string} title - The passage title to play
+     * @param {boolean} isRestore - Whether this play is due to a state restoration (load/backward/forward)
+     */
+    play: function(title, isRestore = false) {
+      if (!Story.has(title)) {
+          console.error(`Engine: Passage "${title}" does not exist.`);
+          return;
+      }
+
+      const passage = Story.get(title);
+
+      // If this is a normal navigation, push a new state
+      if (!isRestore) {
+          State.push(title);
+      }
+
+      this.renderPassage(passage);
+    },
+
+    /**
+     * Move backward in the history array
+     */
+    backward: function() {
+        if (State.index > 0) {
+            State.restore(State.index - 1);
+            this.play(State.currentPassageName, true);
+        }
+    },
+
+    /**
+     * Move forward in the history array
+     */
+    forward: function() {
+        if (State.index < State.history.length - 1) {
+            State.restore(State.index + 1);
+            this.play(State.currentPassageName, true);
+        }
+    },
+
+    /**
+     * Restart the story completely
+     */
+    restart: function() {
+        State.reset();
+        this.play(Story.startPassage);
+    },
+
+    /**
+     * Internal rendering pipeline logic using Wikifier.
+     */
+    renderPassage: function(passage) {
+      const passagesContainer = document.getElementById('passages');
+      if (!passagesContainer) return;
+      
+      // Clear previous passage
+      passagesContainer.innerHTML = '';
+
+      const passageEl = document.createElement('div');
+      passageEl.className = 'passage';
+      
+      // Use Wikifier to parse the content and append the resulting DocumentFragment
+      new Wikifier(passageEl, passage.text);
+      
+      passagesContainer.appendChild(passageEl);
+      window.scrollTo(0, 0);
+
+      // Autosave after rendering a new moment
+      Save.autosave.save();
+    }
+  };
+
+  return engine;
+})();
+
+
+// macros/core.js - Built-in MobileCube macros
+
+(function() {
+  /**
+   * The actual implementation of these macros in this MVP is handled mainly 
+   * inside `wikifier.js` regex passes (like <<set>> and <<if>>).
+   * 
+   * However, for a fully compliant SugarCube-like macro system, we register them 
+   * properly here. Future iteratons of Wikifier would call these handlers.
+   */
+  
+  Macro.add('set', {
+      handler: function() {
+          // Handled natively by Wikifier in MVP
+      }
+  });
+
+  Macro.add('if', {
+      handler: function() {
+          // Handled natively by Wikifier in MVP
+      }
+  });
+
+  Macro.add('elseif', {
+      handler: function() {
+          // Handled natively by Wikifier in MVP
+      }
+  });
+
+  Macro.add('else', {
+      handler: function() {
+          // Handled natively by Wikifier in MVP
+      }
+  });
+
+  Macro.add('link', {
+      handler: function() {
+          // A full macro system would process the inner text and arguments here
+      }
+  });
+
+  Macro.add('button', {
+      handler: function() {
+          // Handled mostly by Wikifier parsing in the MVP
+      }
+  });
+
+  // DOM Replacements
+  Macro.add('replace', {
+      handler: function() {
+          // Example future signature
+      }
+  });
+
+  Macro.add('append', {
+      handler: function() {
+          // Example future signature
+      }
+  });
+
+})();
+
+
+// ui.js - Manages global UI components like the Sidebar and Dialogs
+
+window.UI = (function() {
+  const ui = {
+    isOpen: false,
+
+    init: function() {
+      // Create the sidebar if it doesn't exist
+      if (!document.getElementById('mobilecube-ui-sidebar')) {
+        this.buildSidebar();
+      }
+
+      // Bind UI Bar Toggle
+      const toggleBtn = document.getElementById('ui-bar-toggle');
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+             this.toggleSidebar();
+        });
+      }
+    },
+
+    buildSidebar: function() {
+      const sidebar = document.createElement('div');
+      sidebar.id = 'mobilecube-ui-sidebar';
+      sidebar.className = 'mc-sidebar-closed';
+
+      const content = `
+        <div class="mc-sidebar-header">
+            <h2>${Story.title || 'Story'}</h2>
+            <button id="mc-sidebar-close" aria-label="Close Sidebar">&times;</button>
+        </div>
+        <div class="mc-sidebar-body">
+            <button class="mc-btn" onclick="Engine.backward()">Backward</button>
+            <button class="mc-btn" onclick="Engine.forward()">Forward</button>
+            <hr>
+            <button class="mc-btn" onclick="Save.autosave.save(); alert('Autosaved!')">Autosave</button>
+            <button class="mc-btn" onclick="Save.autosave.load()">Load Autosave</button>
+            <hr>
+            <button class="mc-btn mc-btn-danger" onclick="if(confirm('Restart story?')) Engine.restart()">Restart</button>
+        </div>
+      `;
+
+      sidebar.innerHTML = content;
+      document.body.appendChild(sidebar);
+
+      document.getElementById('mc-sidebar-close').addEventListener('click', () => {
+          this.closeSidebar();
+      });
+    },
+
+    toggleSidebar: function() {
+        if (this.isOpen) {
+            this.closeSidebar();
+        } else {
+            this.openSidebar();
+        }
+    },
+
+    openSidebar: function() {
+        const sidebar = document.getElementById('mobilecube-ui-sidebar');
+        if (sidebar) {
+            sidebar.className = 'mc-sidebar-open';
+            this.isOpen = true;
+        }
+    },
+
+    closeSidebar: function() {
+        const sidebar = document.getElementById('mobilecube-ui-sidebar');
+        if (sidebar) {
+            sidebar.className = 'mc-sidebar-closed';
+            this.isOpen = false;
+        }
+    }
+  };
+
+  return ui;
+})();
+
+
+// core.js - Bootstrapper and global exporter for MobileCube
+
+window.MobileCube = (function() {
+  const core = {
+    init: function() {
+      // 1. Initialize Story to parse passages
+      Story.init();
+
+      // 2. Initialize UI (Sidebar, etc.)
+      UI.init();
+
+      // 3. Update Document Title
+      if (Story.title) {
+        document.title = Story.title;
+        const titleEl = document.getElementById('story-title');
+        if (titleEl) titleEl.textContent = Story.title;
+      }
+
+      // 3. Attempt to load autosave. If failed, play start passage.
+      const loaded = Save.autosave.load();
+      if (!loaded && Story.startPassage) {
+        // Reset state and play the start passage
+        State.reset();
+        Engine.play(Story.startPassage);
+      } else if (!loaded) {
+        console.error("MobileCube: No autosave and no start passage found.");
+      }
+    }
+  };
+
+  // Run init when DOM is fully loaded
+  window.addEventListener('DOMContentLoaded', () => {
+    core.init();
+  });
+
+  return core;
+})();
+
+
+
+</script>
+</body>
+</html>

@@ -29,11 +29,11 @@ js_content = ""
 
 for js_file in js_files:
     with open(os.path.join(src_dir, 'js', js_file), 'r', encoding='utf-8') as f:
-        js_content += f.read() + "\\n\\n"
+        js_content += f.read() + "\n\n"
 
 # Inject CSS and JS into HTML
-combined_html = html_content.replace('<!-- INJECT_CSS -->', f'<style>\\n{css_content}\\n</style>')
-combined_html = combined_html.replace('<!-- INJECT_JS -->', f'<script>\\n{js_content}\\n</script>')
+combined_html = html_content.replace('<!-- INJECT_CSS -->', f'<style>\n{css_content}\n</style>')
+combined_html = combined_html.replace('<!-- INJECT_JS -->', f'<script>\n{js_content}\n</script>')
 
 format_data = {
     "name": "MobileCube",

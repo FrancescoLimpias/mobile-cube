@@ -4,7 +4,7 @@
         {
             "label": "Build MobileCube Dist",
             "type": "shell",
-            "command": "python3 build.py",
+            "command": "docker compose run --rm dev python3 build.py",
             "options": {
                 "cwd": "${workspaceFolder}/mobile-cube"
             },
@@ -21,9 +21,9 @@
         {
             "label": "Start Dev Server",
             "type": "shell",
-            "command": "bash dev.sh",
+            "command": "docker compose up dev",
             "options": {
-                "cwd": "${workspaceFolder}/mobile-cube/test-story"
+                "cwd": "${workspaceFolder}/mobile-cube"
             },
             "isBackground": true,
             "group": "test",
@@ -36,9 +36,9 @@
         {
             "label": "Build Test Story",
             "type": "shell",
-            "command": "bash build.sh",
+            "command": "docker compose run --rm dev bash -c 'cd test-story && bash build.sh'",
             "options": {
-                "cwd": "${workspaceFolder}/mobile-cube/test-story"
+                "cwd": "${workspaceFolder}/mobile-cube"
             },
             "group": "build",
             "presentation": {

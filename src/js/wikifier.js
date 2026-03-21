@@ -23,7 +23,7 @@ window.Wikifier = (function() {
         .replace(/\bnot\b/g, '!');
 
       // We use a small hack to replace $var with State.variables.var and _var with State.temporary.var
-      jsExpr = jsExpr.replace(/\\$([a-zA-Z0-9_]+)/g, "State.variables.$1");
+      jsExpr = jsExpr.replace(/\$([a-zA-Z0-9_]+)/g, "State.variables.$1");
       jsExpr = jsExpr.replace(/_([a-zA-Z0-9_]+)/g, "State.temporary.$1");
 
       try {
@@ -41,7 +41,7 @@ window.Wikifier = (function() {
        // Similar to expression eval, but we don't return anything
        let jsExpr = stmt
         .replace(/\bto\b/g, '=')
-        .replace(/\\$([a-zA-Z0-9_]+)/g, "State.variables.$1")
+        .replace(/\$([a-zA-Z0-9_]+)/g, "State.variables.$1")
         .replace(/_([a-zA-Z0-9_]+)/g, "State.temporary.$1");
 
       try {
@@ -74,7 +74,7 @@ window.Wikifier = (function() {
           // Support pairing blocks and inline execution. For MVP we'll just evaluate <<set>> and conditional blocks.
           
           // Before anything else, parse and execute <<set>>
-          text = text.replace(/<<set\\s+(.+?)>>/g, (match, expression) => {
+          text = text.replace(/<<set\s+(.+?)>>/g, (match, expression) => {
               executeTwineStatement(expression);
               return ''; // Remove from output
           });
@@ -91,7 +91,7 @@ window.Wikifier = (function() {
               const fullBlock = text.substring(startIdx, endIf + 7);
               
               // Evaluate conditions
-              const conditionMatch = fullBlock.match(/<<if\\s+(.+?)>>/);
+              const conditionMatch = fullBlock.match(/<<if\s+(.+?)>>/);
               let renderContent = '';
 
               if (conditionMatch) {
@@ -112,24 +112,21 @@ window.Wikifier = (function() {
           }
 
           // Evaluate raw variables: $var, _var
-          text = text.replace(/(^|[^\\w])\\$([a-zA-Z0-9_]+)/g, (match, pre, varName) => {
+          text = text.replace(/(^|[^\w])\$([a-zA-Z0-9_]+)/g, (match, pre, varName) => {
               return pre + (State.variables[varName] !== undefined ? State.variables[varName] : match);
           });
-          text = text.replace(/(^|[^\\w])_([a-zA-Z0-9_]+)/g, (match, pre, varName) => {
+          text = text.replace(/(^|[^\w])_([a-zA-Z0-9_]+)/g, (match, pre, varName) => {
               return pre + (State.temporary[varName] !== undefined ? State.temporary[varName] : match);
           });
 
           // Escape remaining basic HTML except script tags
-          let parsed = text
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;");
+          let parsed = text;
 
            // Re-instate strong/em
            // Too complex for RegExp without side-effects, so we'll just allow some simple ones if needed.
 
           // Parse links: [[Link]] or [[Title|Link]]
-          parsed = parsed.replace(/\\[\\[(.*?)\\]\\]/g, (match, inner) => {
+          parsed = parsed.replace(/\[\[(.*?)\]\]/g, (match, inner) => {
             let title = inner;
             let target = inner;
 
@@ -151,7 +148,7 @@ window.Wikifier = (function() {
           });
 
           // Parse explicit buttons: <<button "Text" "Passage">>
-          parsed = parsed.replace(/<<button\\s+"([^"]+)"\\s+"([^"]+)">>/g, (match, title, target) => {
+          parsed = parsed.replace(/<<button\s+"([^"]+)"\s+"([^"]+)">>/g, (match, title, target) => {
              const className = 'macro-button ' + (Story.has(target) ? 'link-internal' : 'link-broken');
              const action = `onclick="Engine.play('${target.replace(/'/g, "\\'")}')"`;
              return `<button class="${className}" ${action}>${title}</button>`;
@@ -161,8 +158,8 @@ window.Wikifier = (function() {
           const container = document.createElement('div');
           
           // Fast line break transformation
-          parsed = '<p>' + parsed.split(/\\n\\n+/).join('</p><p>') + '</p>';
-          parsed = parsed.replace(/\\n/g, '<br>');
+          parsed = '<p>' + parsed.split(/\n\n+/).join('</p><p>') + '</p>';
+          parsed = parsed.replace(/\n/g, '<br>');
 
           container.innerHTML = parsed;
           
