@@ -1,0 +1,16 @@
+FROM node:20-bullseye-slim
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    python3 \
+    curl \
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Ensure scripts have correct formatting and no oddities
+ENV LC_ALL=C.UTF-8
+ENV LANG=C.UTF-8
+
+CMD ["bash", "-c", "cd test-story && bash dev.sh"]
