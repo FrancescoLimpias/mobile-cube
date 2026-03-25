@@ -1,5 +1,6 @@
 import os
 import json
+import base64
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
 build_dir = os.path.join(base_dir, 'dist')
@@ -31,8 +32,14 @@ for js_file in js_files:
     with open(os.path.join(src_dir, 'js', js_file), 'r', encoding='utf-8') as f:
         js_content += f.read() + "\n\n"
 
-# Inject CSS and JS into HTML
+logo_path = os.path.join(src_dir, 'assets', 'logo.png')
+with open(logo_path, 'rb') as f:
+    logo_base64 = base64.b64encode(f.read()).decode('utf-8')
+favicon_html = f'<link rel="icon" type="image/png" href="data:image/png;base64,{logo_base64}">'
+
+# Inject CSS, Favicon, and JS into HTML
 combined_html = html_content.replace('<!-- INJECT_CSS -->', f'<style>\n{css_content}\n</style>')
+combined_html = combined_html.replace('<!-- INJECT_FAVICON -->', favicon_html)
 combined_html = combined_html.replace('<!-- INJECT_JS -->', f'<script>\n{js_content}\n</script>')
 
 format_data = {
@@ -40,7 +47,7 @@ format_data = {
     "version": "0.1.0",
     "author": "FrancescoLimpias",
     "description": "A mobile-first story format for Twine based on SugarCube.",
-    "image": "icon.svg",
+    "image": f"data:image/png;base64,{logo_base64}",
     "url": "https://github.com/FrancescoLimpias/mobile-cube",
     "license": "BSD-2-Clause",
     "proofing": False,

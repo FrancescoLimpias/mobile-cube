@@ -1,5 +1,7 @@
 # MobileCube
 
+![MobileCube Logo](src/assets/logo.png)
+
 **A mobile-first story format for Twine based on SugarCube.**
 
 ## Context

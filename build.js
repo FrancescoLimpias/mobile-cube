@@ -28,9 +28,14 @@ for (const file of jsFiles) {
     jsContent += fs.readFileSync(path.join(SRC_DIR, 'js', file), 'utf8') + '\n\n';
 }
 
-// Inject CSS and JS into HTML
+const logoPath = path.join(SRC_DIR, 'assets', 'logo.png');
+const logoBase64 = fs.readFileSync(logoPath).toString('base64');
+const faviconHtml = `<link rel="icon" type="image/png" href="data:image/png;base64,${logoBase64}">`;
+
+// Inject CSS, Favicon, and JS into HTML
 let combinedHtml = htmlContent;
 combinedHtml = combinedHtml.replace('<!-- INJECT_CSS -->', `<style>\n${cssContent}\n</style>`);
+combinedHtml = combinedHtml.replace('<!-- INJECT_FAVICON -->', faviconHtml);
 combinedHtml = combinedHtml.replace('<!-- INJECT_JS -->', `<script>\n${jsContent}\n</script>`);
 
 const formatData = {
@@ -38,7 +43,7 @@ const formatData = {
     version: "0.1.0",
     author: "FrancescoLimpias",
     description: "A mobile-first story format for Twine based on SugarCube.",
-    image: "icon.svg",
+    image: `data:image/png;base64,${logoBase64}`,
     url: "https://github.com/FrancescoLimpias/mobile-cube",
     license: "BSD-2-Clause",
     proofing: false,
